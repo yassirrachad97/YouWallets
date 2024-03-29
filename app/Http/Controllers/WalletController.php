@@ -26,7 +26,7 @@ class WalletController extends Controller
             }
 
             $compte = new Wallet();
-            $compte->numero_compte = rand(1000000000, 9999999999);
+            $compte->Ncompte = rand(1000000000, 9999999999);
             $compte->solde = $request->solde;
             $compte->user_id = $request->user_id;
             $compte->type = $request->type;
@@ -43,9 +43,11 @@ class WalletController extends Controller
     }
 
 
-    public function searchCompte($firstname){
+    public function searchCompte($firstname,$lastname){
         try {
-           $user = User::where('firstname', $firstname)->first();
+            $user = User::where('firstname', $firstname)
+                    ->where('lastname', $lastname)
+                    ->firstOrFail();
 
             if (!$user) {
                 return response()->json([
@@ -63,6 +65,7 @@ class WalletController extends Controller
 
             return response()->json([
                 'firstname'=> $user->firstname,
+                'lastname'=> $user->lastname,
                 'Ncompte' => $compte->Ncompte,
 
             ], Response::HTTP_OK);
